@@ -1,0 +1,44 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# Arquivos de configuração locais
+appsettings.Development.json
+appsettings.Local.json
+
+# Arquivos com informações sensíveis
+appsettings.json
+
+# Logs
+*.log
+
+# Banco de dados local
+*.db
+*.sqlite
+*.sqlite3
+
+# EF Core migrations (opcional)
+# Mantenha se quiser versionar as migrations
+# Migrations/
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
