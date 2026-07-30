@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using TaskSystem.Data;
+using TaskSystem.Repository;
+using TaskSystem.Repository.Interfaces;
 
 namespace TaskSystem
 {
@@ -16,6 +20,12 @@ namespace TaskSystem
             //Swagger
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Add database context
+            builder.Services.AddDbContext<TaskSystemDBContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
 
