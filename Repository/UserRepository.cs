@@ -35,34 +35,35 @@ namespace TaskSystem.Repository
 
         public async Task<UserModel> Update(UserModel user, int id)
         {
-            UserModel userId = await GetById(id);
+            UserModel userById = await GetById(id);
 
-            if (userId == null)
+            if (userById == null)
             {
                 throw new Exception($"User with Id = {id} not found");
             }
             else
             {
-                userId.Name = user.Name;
-                userId.Email = user.Email;
-                userId.UpdatedDate = DateTime.Now;
-                _dbContext.Users.Update(userId);
+                userById.Name = user.Name;
+                userById.Email = user.Email;
+                userById.UpdatedDate = DateTime.Now;
+                
+                _dbContext.Users.Update(userById);
                 await _dbContext.SaveChangesAsync();
-                return userId;
+                return userById;
             }
         }
 
         public async Task<bool> Delete(int id)
         {
-            UserModel userId = await GetById(id);
+            UserModel userById = await GetById(id);
 
-            if (userId == null)
+            if (userById == null)
             {
                 throw new Exception($"User with Id = {id} not found");
             }
             else
             {
-                _dbContext.Users.Remove(userId);
+                _dbContext.Users.Remove(userById);
                 await _dbContext.SaveChangesAsync();
                 return true;
             }

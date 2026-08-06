@@ -15,6 +15,9 @@ namespace TaskSystem.Data.Map
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.CreatedDate).IsRequired();
             builder.Property(x => x.UpdatedDate).IsRequired();
+            builder.Property(x => x.UserId).IsRequired();
+
+            builder.HasOne(x => x.User);
         }
     }
 }
