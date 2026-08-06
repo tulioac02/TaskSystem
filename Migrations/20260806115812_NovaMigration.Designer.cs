@@ -12,8 +12,8 @@ using TaskSystem.Data;
 namespace TaskSystem.Migrations
 {
     [DbContext(typeof(TaskSystemDBContext))]
-    [Migration("20260806110055_TaskMap")]
-    partial class TaskMap
+    [Migration("20260806115812_NovaMigration")]
+    partial class NovaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace TaskSystem.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -83,7 +83,7 @@ namespace TaskSystem.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

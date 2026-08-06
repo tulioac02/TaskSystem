@@ -19,14 +19,16 @@ namespace TaskSystem.Repository
             return await _dbContext.Tasks.ToListAsync();
         }
 
-        public async Task<TaskModel> GetById(int id)
+        public async Task<TaskModel?> GetById(int id)
         {
-            return await _dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Tasks
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<TaskModel> Create(TaskModel task)
         {
             task.CreatedDate = DateTime.Now;
+
             await _dbContext.Tasks.AddAsync(task);
             await _dbContext.SaveChangesAsync();
 
@@ -35,40 +37,37 @@ namespace TaskSystem.Repository
 
         public async Task<TaskModel> Update(TaskModel task, int id)
         {
-            TaskModel taskById = await GetById(id);
+            TaskModel? taskById = await GetById(id);
 
             if (taskById == null)
             {
-                throw new Exception($"Task with Id = {id} not found");
+                throw new KeyNotFoundException($"Task with Id = {id} not found.");
             }
-            else
-            {
-                taskById.Name = task.Name;
-                taskById.Description = task.Description;
-                taskById.Status = task.Status;
-                taskById.UserId = task.UserId;
-                taskById.UpdatedDate = DateTime.Now;
 
-                _dbContext.Tasks.Update(taskById);
-                await _dbContext.SaveChangesAsync();
-                return taskById;
-            }
+            taskById.Name = task.Name;
+            taskById.Description = task.Description;
+            taskById.Status = task.Status;
+            taskById.UserId = task.UserId;
+            taskById.UpdatedDate = DateTime.Now;
+
+            await _dbContext.SaveChangesAsync();
+
+            return taskById;
         }
 
         public async Task<bool> Delete(int id)
         {
-            TaskModel taskById = await GetById(id);
+            TaskModel? taskById = await GetById(id);
 
             if (taskById == null)
             {
-                throw new Exception($"Task with Id = {id} not found");
+                throw new KeyNotFoundException($"Task with Id = {id} not found.");
             }
-            else
-            {
-                _dbContext.Tasks.Remove(taskById);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
+
+            _dbContext.Tasks.Remove(taskById);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

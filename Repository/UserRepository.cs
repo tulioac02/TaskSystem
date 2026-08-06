@@ -19,14 +19,16 @@ namespace TaskSystem.Repository
             return await _dbContext.Users.ToListAsync();
         }
 
-        public async Task<UserModel> GetById(int id)
+        public async Task<UserModel?> GetById(int id)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<UserModel> Create(UserModel user)
         {
             user.CreatedDate = DateTime.Now;
+
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
 
@@ -35,38 +37,35 @@ namespace TaskSystem.Repository
 
         public async Task<UserModel> Update(UserModel user, int id)
         {
-            UserModel userById = await GetById(id);
+            UserModel? userById = await GetById(id);
 
             if (userById == null)
             {
-                throw new Exception($"User with Id = {id} not found");
+                throw new KeyNotFoundException($"User with Id = {id} not found.");
             }
-            else
-            {
-                userById.Name = user.Name;
-                userById.Email = user.Email;
-                userById.UpdatedDate = DateTime.Now;
-                
-                _dbContext.Users.Update(userById);
-                await _dbContext.SaveChangesAsync();
-                return userById;
-            }
+
+            userById.Name = user.Name;
+            userById.Email = user.Email;
+            userById.UpdatedDate = DateTime.Now;
+
+            await _dbContext.SaveChangesAsync();
+
+            return userById;
         }
 
         public async Task<bool> Delete(int id)
         {
-            UserModel userById = await GetById(id);
+            UserModel? userById = await GetById(id);
 
             if (userById == null)
             {
-                throw new Exception($"User with Id = {id} not found");
+                throw new KeyNotFoundException($"User with Id = {id} not found.");
             }
-            else
-            {
-                _dbContext.Users.Remove(userById);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
+
+            _dbContext.Users.Remove(userById);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }
